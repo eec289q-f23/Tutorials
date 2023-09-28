@@ -142,7 +142,7 @@ Host *
 ❯ chmod u=rwx ~/.ssh
 ```
 
-## SSH Logins
+## Login
 
 Once you've copied the private SSH key (either via `ssh-copy-id` for your own server, or uploading to a website for GitHub/HPC2) you should be able to login. Note for HPC2 it may take a day or two for the account to become active. See [HPC2](./HPC2.md) for more info on HPC2.
 
