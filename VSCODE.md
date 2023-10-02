@@ -12,6 +12,12 @@ Other IDEs may or may not include the same set of features, so it is up to you w
 To install and start using VSCode, see [Getting started with Visual Studio Code](https://code.visualstudio.com/docs/introvideos/basics).
 
 A few additional nodes:
+- Install extensions using the side bar (`Ctrl + Shift + X`), with a few notable ones
+  - [SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh)
+  - [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+  - [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)
+  - [Vim key bindings](https://marketplace.visualstudio.com/items?itemName=vscodevim.vim)
+  - [Emacs key bindings](https://marketplace.visualstudio.com/items?itemName=tuttieee.emacs-mcx)
 - See [Debugging](https://code.visualstudio.com/docs/editor/debugging) for using `launch.json` to debug programs 
   - We will provide a `launch.json` file with homeworks or projects when applicable
 - See [Tasks](https://code.visualstudio.com/docs/editor/tasks) for using `tasks.json` to run additional tasks, such as compiling
