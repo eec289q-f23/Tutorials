@@ -5,6 +5,7 @@ We will use the [HPC2 Cluster](https://hpc.ucdavis.edu/clusters) managed by the 
 ## Create an Account
 
 - Generate an SSH key following the [SSH Tutorial](./SSH.md)
+  - You do *NOT* need to copy the private key anywhere with `ssh-copy-id`, instead you will email the public key as follows
 - Request account access with the [HPC2 Account Request Form](https://hpc.ucdavis.edu/form/account-request-form)
   - Under "Account Sponsor" select "EEC 289Q Performance Engr."
   - Under "SSH Public Key" paste your public SSH key, e.g. output from `cat ~/.ssh/hpc2_id_rsa.pub`
