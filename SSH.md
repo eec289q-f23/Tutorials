@@ -171,27 +171,8 @@ SSH should already be installed on macOS, but for additional details see [Setup 
 
 ### Install SSH on Windows
 
-On some windows versions, openssh may be installed, but that version is sometimes outdated. To check if this is installed, in an elevated powershell, run
+On Windows you have two choices. Technically you should be able to use PowerShell w/ OpenSSH to generate a keypair, but there are some situations where it doesn't work. HPC2 recommends using MobaXTerm, and we recommend using that or WSL2 w/ Ubuntu. 
 
-```
-PS> Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH*'
+For the MobaXTerm instructions, go to https://www.hpc.ucdavis.edu/faq and follow the instructions under "How to generate SSH keypair in a Windows operating system?".
 
-Name  : OpenSSH.Client~~~~0.0.1.0
-State : NotPresent
-
-Name  : OpenSSH.Server~~~~0.0.1.0
-State : NotPresent
-```
-
-The output should be as above (`NotPresent`). To install the latest version, there are 2 supported methods. If winget is installed, it is the recommended method
-* **OpenShh Portable**
-  Install the .msi package from [this](https://github.com/PowerShell/Win32-OpenSSH/releases/latest) GitHub release page
-* **With `winget`**
-  To install openssh with winget, run the following command in a powershell
-  ```
-  PS> winget install Microsoft.OpenSSH.Beta
-  ```
-
-It might also help to install the new [Windows Terminal](ms-windows-store://pdp/?ProductId=9N0DX20HK701) (alternatively, [here](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701)) to replace the default Console host.
-
-Also see the following questions in the [HPC2 FAQ](https://www.hpc.ucdavis.edu/faq): "How to generate SSH keypair in a Windows operating system?"
+For WSL2, search how to install WSL2 on Windows and choose Ubuntu. Then follow the Linux instructions above (this is our recommended approach). This also integrates very well with VSCode if you're going to use that moving forward.
