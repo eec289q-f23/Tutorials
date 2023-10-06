@@ -45,25 +45,24 @@ Agent pid 16922
 ❯ ssh-add ~/.ssh/id_rsa
 ```
 
-- Copy the key to your server
-  - *NOTE: We do not have to do this for HPC2 or GitHub, but you will need to do this for any personal machines you may have.* (see [HPC2](./HPC2.md) for more info on HPC2)
-
-```console
-❯ ssh-copy-id -i ~/.ssh/id_rsa <user>@<hostname>
-```
-
 - Update permissions for new key and config (assuming linux and macOS)
   - Private key: file permissions must be `600` = `u=rw` = `rw-------`
   - Public key and config: file permissions must be `644` = `u=rw,g=r,o=r` = `rw-r--r--`
   - SSH folder: directory permissions must be `700` = `u=rwx` = `drwx------`
 
 ```console
-❯ chmod u=rw ~/.ssh/hpc2_id_rsa
-❯ chmod u=rw,g=r,o=r ~/.ssh/hpc2_id_rsa.pub
+❯ chmod u=rw ~/.ssh/id_rsa
+❯ chmod u=rw,g=r,o=r ~/.ssh/id_rsa.pub
 ❯ chmod u=rwx ~/.ssh
 ```
 
-- If we SSH somewhere with `ssh <username>@<hostname>`, the SSH client will automatically search for `id_rsa` and find this key. You can see this if you use `ssh -v <username>@<hostname>`.
+- Output the public key to add to the HPC2 account request form
+
+```console
+❯ cat ~/.ssh/id_rsa.pub
+```
+
+- If we SSH into HPC2 with `ssh <kerberosid>@hpc2.engr.ucdavis.edu`, the SSH client will automatically search for `id_rsa` and find this key. You can see this if you use `ssh -v <kerberosid>@hpc2.engr.ucdavis.edu`.
 
 ### Managing Multiple SSH Keys
 
@@ -97,26 +96,19 @@ Agent pid 16922
 ❯ ssh-add ~/.ssh/hpc2_id_rsa
 ```
 
-- Copy the key to your server
-  - *NOTE: We do not have to do this for HPC2 or GitHub, but you will need to do this for any personal machines you may have*
-
-```console
-❯ ssh-copy-id -i ~/.ssh/hpc2_id_rsa <user>@<hostname>
-```
-
-- \[Recommended\] Add a section in `~/.ssh/config` for this host with the following, using your Kerberos username for <USER>
-  - If this file doesn't exist, create it first
-  - Without this you would have to do `ssh -i ~/.ssh/hp2_id_rsa <user>@<full_hostname>`
-  - With this you can just do `ssh <short_hostname>`, e.g. `ssh hpc2`
+- Add a section in `~/.ssh/config` for this host with the following, using your Kerberos username for <USER>
+  - If this file doesn't exist, create it first with `touch ~/.ssh/config`
+  - Without this config you would have to do `ssh -i ~/.ssh/hp2_id_rsa <kerberosid>@hpc2.engr.ucdavis.edu`
+  - With this config you can just do `ssh hpc2`
 
 ```txt
 Host hpc2 hpc2.engr.ucdavis.edu
     HostName hpc2.engr.ucdavis.edu
     IdentityFile ~/.ssh/hpc2_id_rsa
-    User <USER>
+    User <KerberosID>
 ```
 
-- \[Optional\] You can add the following section as well to your `~/.ssh/config` 
+- \[Optional\] You can add the following section as well to your `~/.ssh/config`, at the end of the file 
   - `ForwardAgent yes` allows the remote server to use your local SSH keys, e.g. for GitHub or another service
   - `ForwardX11 yes` allows for X11 forwarding for any graphical interfaces
   - `IdentitiesOnly yes` forces a 1:1 mapping from entries in this file to your keys, which can speed up the process (this is optional, you can try it both ways)
@@ -144,7 +136,7 @@ Host *
 
 ## Login
 
-Once you've copied the private SSH key (either via `ssh-copy-id` for your own server, or uploading to a website for GitHub/HPC2) you should be able to login. Note for HPC2 it may take a day or two for the account to become active. See [HPC2](./HPC2.md) for more info on HPC2.
+Once you've copied the public SSH key (by uploading to a website for GitHub/HPC2, or via `ssh-copy-id` for most other servers) you should be able to login. Note for HPC2 it may take a day or two for the account to become active. See [HPC2](./HPC2.md) for more info on HPC2.
 
 Here are some HPC2 examples. The shorthand version (e.g. `ssh hpc2`) only works if you've made the changes to `~/.ssh/config` above.
 
@@ -158,6 +150,24 @@ Here are some HPC2 examples. The shorthand version (e.g. `ssh hpc2`) only works 
 # Works if key and host are in ~/.ssh/config
 ❯ ssh hpc2
 ```
+
+##  Error: Permission Denied (publickey)
+
+This is a common error telling you that SSH cannot find your local private key corresponding to your public key on the server. You can spend time Googling it to search for answers or start below and see if this advice works to help you. 
+
+Before anything, make sure you have submitted the HPC2 account creation form and have gotten an email saying your account is setup. Let's assume your private key is located at `~/.ssh/hpc2_id_rsa` (and your public key at `~/.ssh/hpc2_id_rsa.pub`), and your kerberos username is `msmith`.
+1. Verify both the private and public keys exist in the same folder. In macOS/Linux, this would be `ls -al ~/.ssh`
+  - Technically you don't need the public key to SSH in, but we're going to use it in step #2
+2. Make sure you have the right password to your private key by running `ssh-keygen -y -f  ~/.ssh/hpc2_id_rsa`
+  - You are passing in your private key, and it should print your public key. If it asks for a password, enter it, and this is what you will need to use when using SSH with this key.
+3. Double check your permissions, comparing the output in `ls -al ~/.ssh` with the permission changes you did above.
+4. Try to SSH again, explicitly passing in this path: `ssh -i ~/.ssh/hpc2_id_rsa msmith@hpc2.engr.ucdavis.edu`
+  - This should connect normally. If it asks you about a "known host" and whether you want to connect, say yes.
+5. Try again, with verbose output: `ssh -v -i ~/.ssh/hpc2_id_rsa msmith@hpc2.engr.ucdavis.edu`
+  - Read this output to understand what's going on and narrow down the problem further
+  - First it's looking for config files and applying rules, then its checking known hosts, then it's finding and using your private key you passed in with `-i` .
+
+Do your best to fix the issue yourself, but if you get stuck, reach out to the TA for help.
 
 ## Installing SSH
 
