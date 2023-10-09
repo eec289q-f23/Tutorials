@@ -166,6 +166,9 @@ Before anything, make sure you have submitted the HPC2 account creation form and
 5. Try again, with verbose output: `ssh -v -i ~/.ssh/hpc2_id_rsa msmith@hpc2.engr.ucdavis.edu`
   - Read this output to understand what's going on and narrow down the problem further
   - First it's looking for config files and applying rules, then its checking known hosts, then it's finding and using your private key you passed in with `-i` .
+6. If it still isn't obvious, go to the [ServiceHub](https://servicehub.ucdavis.edu/servicehub) and look at the "HPC2 Account request" ticket to verify your public key
+  - The first thing in the ticket at the very bottom will be the key you submitted
+  - Compare this to your public key by outputting it, e.g. `cat ~/.ssh/hpc2_id_rsa.pub`
 
 Do your best to fix the issue yourself, but if you get stuck, reach out to the TA for help.
 
