@@ -2,10 +2,10 @@
 
 We will use SSH keys for both HPC2 and GitHub. We will assume you are using Linux (via WSL2 or natively) or macOS, which should have SSH installed natively. If there are issues, see [Install SSH on Linux](#install-ssh-on-linux) or [Install SSH on macOS](#install-ssh-on-macos) below. If using Windows directly, see [Install SSH on Windows](#install-ssh-on-windows) below.
 
-Two key points:
-- HPC2 says to "**use a strong, memorable passphrase**" along for your SSH key. To avoid typing the password in, you can use SSH-agent or keychain to store the password (shown below).
-- Remember to **never share your private key with anyone**. If you need to copy the key to a different machine use a physical USB drive or an encrypted service such as SCP or SFTP. See the HPC2 FAQ for more details under "How to move and copy SSH keys"
-- HPC2 says "for RSA we recommend using a key size of 2048 or 4096" which we can specify with `ssh-keygen -t rsa -b <size>`. On Linux the default is an RSA key with 3072 bits which should be fine.
+Key points with SSH:
+- SSH works by generating two files, a "public key" ending in `.pub`, e.g. `id_rsa.pub` and a "private key" with no extension, e.g. `id_rsa`
+- **You send your public key to HPC2/GitHub**, you do NOT send your private key
+- **Never share your private key with anyone**. If you need to copy the key to a different machine use a physical USB drive or an encrypted service such as SCP or SFTP. See the HPC2 FAQ for more details under "How to move and copy SSH keys"
 
 Other resources:
 - See [GitHub: About SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/about-ssh) for how to add an SSH key to GitHub
@@ -16,8 +16,8 @@ Other resources:
 
 ### Managing One SSH Key
 
-- Generate an SSH key with default path
-  - Default key is `id_rsa` which stores private key as `~/.ssh/id_rsa` and public key as `~/.ssh/id_rsa.pub` 
+- Generate an SSH key pair with default path
+  - Default name is `id_rsa` which stores private key as `~/.ssh/id_rsa` and public key as `~/.ssh/id_rsa.pub` 
 
 ```console
 ❯ ssh-keygen
@@ -56,11 +56,23 @@ Agent pid 16922
 ❯ chmod u=rwx ~/.ssh
 ```
 
-- Output the public key to add to the HPC2 account request form
+- Output the **public key** to add to the HPC2 account request form
+  - *VERY IMPORTANT*: Make *sure* this is the public key ending in `.pub`, NOT the private key
 
 ```console
 ❯ cat ~/.ssh/id_rsa.pub
 ```
+
+- Verify you output a public key by checking the output. It should look like the following with `ssh-rsa`, followed by a long string of alphanumeric characters *with no spaces* ending in `==`. Then there is a comment which my default is your username@hostname that you're on (this part doesn't matter)
+  - This is *just* an example, your public key will be different
+  ```console
+  ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAklOUpkDHrfHY17SbrmTIpNLTGK9Tjom/BWDSU
+  GPl+nafzlHDTYW7hdI4yZ5ew18JH4JW9jbhUFrviQzM7xlELEVf4h9lFX5QVkbPppSwg0cda3
+  Pbv7kOdJ/MTyBlWXFCR+HAo3FXRitBqxiX1nKhXpHAZsMciLq8V6RjsNAQwdsdMFvSlVK/7XA
+  t3FaoJoAsncM1Q9x5+3V0Ww68/eIFmb1zuUFljQJKprrX88XypNDvjYNby6vw/Pb0rwert/En
+  mZ+AW4OZPnTPI89ZPmVMLuayrD2cE86Z/il8b+gw3r3+1nKatmIkjn2so1d01QraTlMqVSsbx
+  NrRFi9wrf+M7Q== schacon@mylaptop.local
+  ```
 
 - If we SSH into HPC2 with `ssh <kerberosid>@hpc2.engr.ucdavis.edu`, the SSH client will automatically search for `id_rsa` and find this key. You can see this if you use `ssh -v <kerberosid>@hpc2.engr.ucdavis.edu`.
 
