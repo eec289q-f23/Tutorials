@@ -53,6 +53,7 @@ Agent pid 16922
 ```console
 ❯ chmod u=rw ~/.ssh/id_rsa
 ❯ chmod u=rw,g=r,o=r ~/.ssh/id_rsa.pub
+❯ chmod u=rw,g=r,o=r ~/.ssh/config
 ❯ chmod u=rwx ~/.ssh
 ```
 
@@ -143,6 +144,7 @@ Host *
 ```console
 ❯ chmod u=rw ~/.ssh/hpc2_id_rsa
 ❯ chmod u=rw,g=r,o=r ~/.ssh/hpc2_id_rsa.pub
+❯ chmod u=rw,g=r,o=r ~/.ssh/config
 ❯ chmod u=rwx ~/.ssh
 ```
 
