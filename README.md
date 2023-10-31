@@ -23,8 +23,3 @@ HPC2, like most high-performance computing clusters, uses Slurm to manage jobs. 
 
 - [HPC2](./HPC2.md): How to create an account on HPC2, login, and transfer files
 - [Slurm](./SLURM.md): Use Slurm to launch jobs on HPC clusters
-- More coming soon...
-
-## Languages and Packages
-
-- Coming soon...
